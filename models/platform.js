@@ -10,12 +10,16 @@ module.exports = function(sequelize, DataTypes) {
 
   const Platform = sequelize.define('Platform', {
     id : {
-      type : DataTypes.BIGINT,
-      primaryKey : true,
+      type          : DataTypes.BIGINT,
+      primaryKey    : true,
       autoIncrement : true
     },
     name : {
-      type : DataTypes.STRING,
+      type      : DataTypes.STRING,
+      allowNull : false
+    },
+    url : {
+      type      : DataTypes.STRING,
       allowNull : false
     }
   });
@@ -23,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
   /** Class Methods */
 
   Platform.associate = function (models) {
-    Platform.belongsTo( models.Media );
+    Platform.belongsTo( models.Type );
   }
 
   /** Instance Methods */
@@ -34,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
     result.id   = this.id;
     result.name = this.name;
 
-    if( this.Media ) result.media = this.Media.responsify();
+    if( this.Type ) result.media = this.Type.responsify();
 
     return result;
   }

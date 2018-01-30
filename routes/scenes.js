@@ -12,41 +12,59 @@ const sequelize = require('sequelize');
 * PARAMS :
 * RESULT :
 */
+router.get('/:festivalID', function (req,res) {
+
+  models.Scene.findAll({
+    where : {
+              festival_id : req.params.festivalID
+            }
+  })
+  .then( scenes => {
+    let result = {};
+
+    for( let scene of scenes ) results.push(scene.responsify());
+
+    res.json({ result : 1, content : results });
+  })
+  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+});
+
+/**
+* ROUTE :
+* DESCRIPTION :
+* PARAMS :
+* RESULT :
+*/
 router.post('/new', function (req,res) {
   let send = req.body;
 
   models.Festival.find({
-
+    where : {
+              id : send.festival
+            }
   })
   .then( festival => {
 
     if (festival) {
 
       models.Scene.create({
-        name, description
+        name        : send.name,
+        description : send.description
       })
       .then( scene => {
 
         festival.setScene(scene)
         .then( festival => {
-          res.json( { } );
+
+          res.json({ result : 1, content : festival });
         })
-        .catch( err => {
-          res.json( { } );
-        });
-
+        .catch( err => { res.json({ result : -1, message : 'Error' }); });
       })
-      .catch( err => {
-        res.json( { } );
-      });
-
+      .catch( err => { res.json({ result : -1, message : 'Error' }); });
     }
-    else res.json( { } );
-
+    else res.json({ result : 0, message : 'Error' });
   })
-  .catch( err => {
-    res.json( { } );
-  });
+  .catch( err => { res.json({ result : -1, message : 'Error' }); });
 
 });
 
@@ -60,23 +78,23 @@ router.post('/edit', function (req,res) {
   let send = req.body;
 
   models.Scene.find({
-
+    where : {
+              id : send.scene
+            }
   })
   .then( scene => {
 
     if (scene) {
 
       scene.updateAttributes({
-
+        name        : send.name,
+        descriprion : send.description
       });
-      res.json( { } );
+      res.json({ result : 1, content : scene });
     }
-    else res.json( { } );
-
+    else res.json({ result : 0, message : 'Error' });
   })
-  .catch( err => {
-    res.json( { } );
-  });
+  .catch( err => { res.json({ result : -1, message : 'Error' }); });
 
 });
 
@@ -90,11 +108,15 @@ router.post('/:sceneID', function (req,res) {
   let send = req.body;
 
   models.Timetable.destroy({
-
+    where : {
+              scene_id : send.scene
+            }
   });
 
   models.Scene.find({
-
+    where : {
+              id : send.scene
+            }
   })
   .then( scene => {
 
@@ -102,18 +124,14 @@ router.post('/:sceneID', function (req,res) {
 
       scene.destroy()
       .then( scene => {
-        res.json( { } );
+        res.json({ result : 1, message : 'Scene successfully destroyed' });
       })
-      .catch( err => {
-        res.json( { } );
-      });
-
+      .catch( err => { res.json({ result : 0, message : 'Error' }); });
     }
-    else res.json( { } );
-
+    else res.json({ result : 0, message : 'Error' });
   })
-  .catch( err => { 
-    res.json( { } );
-  });
+  .catch( err => { res.json({ result : 0, message : 'Error' }); });
 
 });
+
+module.exports = router;

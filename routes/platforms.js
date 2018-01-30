@@ -15,43 +15,20 @@ const sequelize = require('sequelize');
 router.get('/', function (req,res) {
 
   models.Platform.findAll({
-
+    include : [ { model : models.Type } ]
   })
   .then( platforms => {
 
     if (platforms) {
       let results = {};
 
-      for (let in ) results.push();
+      for( let platform of platforms ) results.push(platform.responsify());
 
-      res.json( { } );
+      res.json({ result : 1, content : results });
     }
-    else res.json( { } );
+    else res.json({ result : 0, message : 'Error' });
   })
-  .catch( err => {
-    res.json( { } );
-  });
-
-});
-
-/**
-* ROUTE :
-* DESCRIPTION :
-* PARAMS :
-* RESULT :
-*/
-router.post('/new', function (req,res) {
-  let send = req.body;
-
-  models.Platform.create({
-    name
-  })
-  .then( platform => {
-    res.json( { } );
-  })
-  .catch( err => {
-    res.json( { } );
-  });
+  .catch( err => { res.json({ result : -1, message : 'Error' }); });
 
 });
 
@@ -65,22 +42,23 @@ router.post('/edit', function (req,res) {
   let send = req.body;
 
   models.Platform.find({
-
+    where : {
+              id : send.platform
+            }
   })
   .then( platform => {
 
     if (platform) {
 
       platform.updateAttributes({
-
+        name : send.name,
+        url  : send.url
       });
-      res.json( { } );
+      res.json({ result : 1, content : platform });
     }
-    else res.json( { } );
+    else res.json({ result : 0, message : 'Error' });
   })
-  .catch( err => {
-    res.json( { } );
-  });
+  .catch( err => { res.json({ result : -1, message : 'Error' }); });
 
 });
 
@@ -93,7 +71,9 @@ router.post('/edit', function (req,res) {
 router.delete('/:platformID', function (req,res) {
 
   models.Platform.find({
-
+    where : {
+              id : req.params.platformID
+            }
   })
   .then( platform => {
 
@@ -101,16 +81,14 @@ router.delete('/:platformID', function (req,res) {
 
       platform.destroy()
       .then( platform => {
-        res.json( { } );
+        res.json({ result : 1, message : 'Platform successfully destroyed' });
       })
-      .catch( err => { 
-        res.json( { } );
-      });
+      .catch( err => { res.json({ result : -1, message : 'Error' }); });
     }
-    else res.json( { } );
+    else res.json({ result : 0, message : 'Error' });
   })
-  .catch( err => {
-    res.json( { } );
-  });
+  .catch( err => { res.json({ result : -1, message : 'Error' }); });
 
 });
+
+module.exports = router;
