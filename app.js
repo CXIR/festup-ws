@@ -1,14 +1,27 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
+var express      = require('express');
+var path         = require('path');
+var favicon      = require('serve-favicon');
+var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var bodyParser   = require('body-parser');
+
 
 var models = require('./models');
-models.sequelize.sync({ force : true });
 
-var index = require('./routes/index');
+models.sequelize.sync(
+                        { force : true }
+                      );
+
+
+var index      = require('./routes/index');
+var artists    = require('./routes/artists');
+var festivals  = require('./routes/festivals');
+var medias     = require('./routes/medias');
+var platforms  = require('./routes/platforms');
+var prices     = require('./routes/prices');
+var scenes     = require('./routes/scenes');
+var timetables = require('./routes/timetables');
+var types      = require('./routes/types');
 
 var app = express();
 
@@ -24,7 +37,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+app.use( '/',           index );
+app.use( '/artists',    artists );
+app.use( '/festivals',  festivals );
+app.use( '/medias',     medias );
+app.use( '/platforms',  platforms );
+app.use( '/prices',     prices );
+app.use( '/scenes',     scenes );
+app.use( '/timetables', timetables );
+app.use( '/types',      types );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
