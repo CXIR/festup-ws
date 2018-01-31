@@ -28,6 +28,10 @@ module.exports = function(sequelize, DataTypes) {
 
   Media.associate = function (models) {
     Media.belongsTo( models.Type );
+
+    Media.belongsToMany( models.Festival, { through : 'FestivalMedias', as : 'Festivals' } );
+    Media.belongsToMany( models.Artist,   { through : 'ArtistMedias',   as : 'Artists'   } );
+    
   }
 
   /** Instance Methods */

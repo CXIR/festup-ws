@@ -28,6 +28,9 @@ module.exports = function(sequelize, DataTypes) {
 
   Platform.associate = function (models) {
     Platform.belongsTo( models.Type );
+
+    Platform.belongsToMany( models.Festival, { through : 'FestivalPlatforms', as : 'Platforms' } );
+    Platform.belongsToMany( models.Artist,   { through : 'ArtistPlatforms',   as : 'Artists'   } );
   }
 
   /** Instance Methods */

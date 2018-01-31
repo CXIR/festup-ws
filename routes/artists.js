@@ -21,9 +21,9 @@ router.get('/one/:artistID', function (req,res) {
               id : req.params.artistID
             },
     include : [
-                { model : models.Media,    as : 'Medias',     include : [ models.Type    ] },
-                { model : models.Platform, as : 'Plateforms'  include : [ models.Type    ] },                           },
-                { model : models.Festival, as : 'Shows',      include : [ models.Address ] }
+                { model : models.Media,    as : 'Medias',      include : [ models.Type    ] },
+                { model : models.Platform, as : 'Plateforms',  include : [ models.Type    ] },
+                { model : models.Festival, as : 'Shows',       include : [ models.Address ] }
               ]
   })
   .then( artist => {
@@ -31,7 +31,7 @@ router.get('/one/:artistID', function (req,res) {
     if (artist) res.json(artist.responsify());
     else res.json({ result : -1, message : 'Error' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', err : err }); });
 
 });
 
@@ -45,9 +45,9 @@ router.get('/all', function (req,res) {
 
   models.Artist.findAll({
     include : [
-                { model : models.Media,    as : 'Medias',     include : [ models.Type    ] },
-                { model : models.Platform, as : 'Plateforms', include : [ models.Type    ] },
-                { model : models.Festival, as : 'Shows',      include : [ models.Address ] }
+                { model : models.Media,    as : 'Medias',    include : [ models.Type ]     },
+                { model : models.Platform, as : 'Platforms', include : [ models.Type ]     },
+                { model : models.Festival, as : 'Festivals', include : [ models.Address ]  }
               ]
   })
   .then( artists => {
@@ -62,7 +62,7 @@ router.get('/all', function (req,res) {
     else res.json({ result : 0, message : 'Error' });
 
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', err : err  }); });
 
 });
 

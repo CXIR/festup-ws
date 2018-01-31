@@ -19,7 +19,7 @@ router.get('/:artistID', function (req,res) {
               artist_id : req.params.artistID
             },
     include : [
-                { model : models.Festival, include [ models.Address ] },
+                { model : models.Festival, include : [ models.Address ] },
                 { model : models.Scene    },
                 { model : models.Artist   }
               ]

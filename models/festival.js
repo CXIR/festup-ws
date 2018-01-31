@@ -44,11 +44,11 @@ module.exports = function(sequelize, DataTypes) {
   /** Class Methods */
 
   Festival.associate = function (models) {
-    Festival.belongsToMany( models.Media,     { through : 'FestivalMedias',     as : 'Medias'     } );
-    Festival.belongsToMany( models.Scene,     { through : 'FestivalScenes',     as : 'Scenes'     } );
-    Festival.belongsToMany( models.Artist,    { through : 'FestivalArtists',    as : 'Artists'    } );
-    Festival.belongsToMany( models.Platform,  { through : 'FestivalPlatforms',  as : 'Platforms'  } );
-    Festival.belongsToMany( models.Price,     { through : 'FestivalPrices',     as : 'Prices'     } );
+    Festival.belongsToMany( models.Artist,   { through : 'FestivalArtists',   as : 'Artists'   } );
+    Festival.belongsToMany( models.Media,    { through : 'FestivalMedias',    as : 'Medias'    } );
+    Festival.belongsToMany( models.Scene,    { through : 'FestivalScenes',    as : 'Scenes'    } );
+    Festival.belongsToMany( models.Platform, { through : 'FestivalPlatforms', as : 'Platforms' } );
+    Festival.belongsToMany( models.Price,    { through : 'FestivalPrices',    as : 'Prices'    } );
 
     Festival.belongsTo( models.Address );
   }
