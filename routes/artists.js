@@ -59,10 +59,10 @@ router.get('/all', function (req,res) {
 
       res.json({ result : 1, content : results });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Artist found' });
 
   })
-  .catch( err => { res.json({ result : -1, message : 'Error', err : err  }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err  }); });
 
 });
 
@@ -83,9 +83,9 @@ router.post('/new', function (req,res) {
   .then( artist => {
 
     if (artist) res.json({ result : 1, content : artist.responsify() });
-    else res.json({ result : -1, message : 'Error' });
+    else res.json({ result : -1, message : 'No Artist found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -117,13 +117,13 @@ router.post('/media', function (req,res) {
         .then( artist => {
           res.json({result : 1, content : artist.responsify() });
         })
-        .catch( err => { res.json({ result : -1, message : 'Error' }); });
+        .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Artist found' });
   })
-  .catch(err => { res.json({ result : -1, message : 'Error' }); });
+  .catch(err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -163,15 +163,15 @@ router.post('/platform', function (req,res) {
             .then( artist => {
               res.json({ result : 1, content : artist });
             })
-            .catch( err => { res.json({ result : -1, message : 'Error' }); });
+            .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
           })
-          .catch( err => { res.json({ result : -1, message : 'Error' }); });
+          .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     })
-    .catch( err => { res.json({ result : -1, message : 'Error' }); });
+    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -205,7 +205,7 @@ router.post('/search', function (req,res) {
     }
     else res.redirect('/artists/discogs');
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -229,7 +229,7 @@ router.post('/discogs', function (req,res) {
   .then( artist => {
     res.json(artist);
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 

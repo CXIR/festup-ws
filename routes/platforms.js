@@ -26,9 +26,9 @@ router.get('/', function (req,res) {
 
       res.json({ result : 1, content : results });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Platform found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -56,9 +56,9 @@ router.post('/edit', function (req,res) {
       });
       res.json({ result : 1, content : platform });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Platform found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
