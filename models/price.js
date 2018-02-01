@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
   /** Class Methods */
 
   Price.associate = function (models) {
-
+    Price.belongsToMany( models.Festival, { through : 'FestivalPrices', as : 'Prices' } );
   }
 
   /** Instance Methods */

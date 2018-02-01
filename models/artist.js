@@ -32,9 +32,9 @@ module.exports = function(sequelize, DataTypes) {
   /** Class Methods */
 
   Artist.associate = function (models) {
-    Artist.belongsToMany( models.Media,    { through : 'ArtistMedias',    as : 'Medias'     } );
-    Artist.belongsToMany( models.Platform, { through : 'ArtistPlatforms', as : 'Platforms' } );
-    Artist.belongsToMany( models.Festival, { through : 'FestivalArtists', as : 'Festivals'  } );
+    Artist.belongsToMany( models.Festival, { through : 'ArtistFestivals',   as : 'Festivals'  } );
+    Artist.belongsToMany( models.Media,    { through : 'ArtistMedias',      as : 'Medias'     } );
+    Artist.belongsToMany( models.Platform, { through : 'ArtistPlatforms',   as : 'Platforms'  } );
   }
 
   /** Instance Methods */
