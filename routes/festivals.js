@@ -19,9 +19,9 @@ router.get('/one/:ID', function (req,res) {
                 id : req.params.ID
               },
     include : [
-                { model : models.Media,     as : 'Medias',    include : [ models.Type ]                  },
-                { model : models.Artist,    as : 'Artists',   include : [ models.Type, models.Platform ] },
-                { model : models.Platform,  as : 'Platforms', include : [ models.Type ]                  },
+                { model : models.Media,     as : 'Medias' ,   include : [ { model : models.Type  } ] },
+                { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Platform,  as : 'Platforms', include : [ { model : models.Type } ] },
                 { model : models.Scene,     as : 'Scenes' },
                 { model : models.Price,     as : 'Prices' },
                 { model : models.Address }
@@ -48,9 +48,9 @@ router.get('/coming', function (req,res) {
                 begin : { [Op.gte] : new Date() }
               },
     include : [
-                { model : models.Media,     as : 'Medias',    include : [ models.Type ]                  },
-                { model : models.Artist,    as : 'Artists',   include : [ models.Type, models.Platform ] },
-                { model : models.Platform,  as : 'Platforms', include : [ models.Type ]                  },
+                { model : models.Media,     as : 'Medias' ,   include : [ { model : models.Type  } ] },
+                { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Platform,  as : 'Platforms', include : [ { model : models.Type } ] },
                 { model : models.Scene,     as : 'Scenes' },
                 { model : models.Price,     as : 'Prices' },
                 { model : models.Address }
@@ -74,9 +74,9 @@ router.get('/all', function (req,res) {
 
   models.Festival.findAll({
     include : [
-                { model : models.Media,     as : 'Medias',    include : [ models.Type ]                  },
-                { model : models.Artist,    as : 'Artists',   include : [ models.Type, models.Platform ] },
-                { model : models.Platform,  as : 'Platforms', include : [ models.Type ]                  },
+                { model : models.Media,     as : 'Medias' ,   include : [ { model : models.Type  } ] },
+                { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Platform,  as : 'Platforms', include : [ { model : models.Type } ] },
                 { model : models.Scene,     as : 'Scenes' },
                 { model : models.Price,     as : 'Prices' },
                 { model : models.Address }

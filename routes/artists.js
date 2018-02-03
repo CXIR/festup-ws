@@ -21,9 +21,9 @@ router.get('/one/:artistID', function (req,res) {
               id : req.params.artistID
             },
     include : [
-                { model : models.Media,    as : 'Medias',      include : [ models.Type    ] },
-                { model : models.Platform, as : 'Plateforms',  include : [ models.Type    ] },
-                { model : models.Festival, as : 'Shows',       include : [ models.Address ] }
+                { model : models.Media,    as : 'Medias',      include : [ { model : models.Type    } ] },
+                { model : models.Platform, as : 'Plateforms',  include : [ { model : models.Type    } ] },
+                { model : models.Festival, as : 'Shows',       include : [ { model : models.Address } ] }
               ]
   })
   .then( artist => {
@@ -45,9 +45,9 @@ router.get('/all', function (req,res) {
 
   models.Artist.findAll({
     include : [
-                { model : models.Media,    as : 'Medias',    include : [ models.Type ]     },
-                { model : models.Platform, as : 'Platforms', include : [ models.Type ]     },
-                { model : models.Festival, as : 'Festivals', include : [ models.Address ]  }
+                { model : models.Media,    as : 'Medias',    include : [ { model : models.Type    } ] },
+                { model : models.Platform, as : 'Platforms', include : [ { model : models.Type    } ] },
+                { model : models.Festival, as : 'Festivals', include : [ { model : models.Address } ] }
               ]
   })
   .then( artists => {
@@ -190,9 +190,9 @@ router.post('/search', function (req,res) {
                   { description : { [Op.like] : send.term } } ]
     },
     include : [
-                { model : models.Media,    as : 'Medias',     include : [ models.Type    ] },
-                { model : models.Platform, as : 'Plateforms', include : [ models.Type    ] },
-                { model : models.Festival, as : 'Shows',      include : [ models.Address ] }
+                { model : models.Media,    as : 'Medias',     include : [ { model : models.Type    } ] },
+                { model : models.Platform, as : 'Plateforms', include : [ { model : models.Type    } ] },
+                { model : models.Festival, as : 'Shows',      include : [ { model : models.Address } ] }
               ]
   })
   .then( artists => {

@@ -24,7 +24,7 @@ router.get('/', function (req,res) {
 
     res.json({ result : 1, content : results });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 });
 
 /**
@@ -42,7 +42,7 @@ router.post('/new', function (req,res) {
   .then( type => {
     res.json({ result : 1, content : type });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 });
 
 /**
@@ -65,7 +65,7 @@ router.post('/edit', function (req,res) {
      });
      res.json({ result : 1, content : type });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 });
 
 /**
@@ -87,9 +87,9 @@ router.delete('/:typeID', function (req,res) {
     .then( type => {
       res.json({ result : 1, message : 'Type successfully destroyed' });
     })
-    .catch( err => { res.json({ result : -1, message : 'Error' }); });
+    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 });
 
 module.exports = router;

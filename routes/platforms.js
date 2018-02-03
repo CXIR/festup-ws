@@ -83,11 +83,11 @@ router.delete('/:platformID', function (req,res) {
       .then( platform => {
         res.json({ result : 1, message : 'Platform successfully destroyed' });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Platform found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
