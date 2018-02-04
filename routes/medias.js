@@ -24,29 +24,16 @@ router.post('/new/festival', function (req,res) {
 
     if (festival) {
 
-      models.Type.find({
-        where : {
-                  id : send.type
-                }
+      models.Media.create({
+        name : send.name,
+        url  : send.url
       })
-      .then( type => {
+      .then( media => {
 
-        models.Media.create({
-          name : send.name,
-          url  : send.url
-        })
-        .then( media => {
 
-          media.setType(type)
-          .then( media => {
-
-            festival.setMedia( media )
-            .then( festival => {
-              res.json({ result : 1, content : festival });
-            })
-            .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
-          })
-          .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
+        festival.setMedia( media )
+        .then( festival => {
+          res.json({ result : 1, content : festival });
         })
         .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
@@ -76,29 +63,15 @@ router.post('/new/artist', function (req,res) {
 
     if (artist) {
 
-      models.Type.find({
-        where : {
-                  id : send.type
-                }
+      models.Media.create({
+        name : send.name,
+        url  : send.url
       })
-      .then( type => {
+      .then( media => {
 
-        models.Media.create({
-          name : send.name,
-          url  : send.url
-        })
-        .then( media => {
-
-          media.setType(type)
-          .then( media => {
-
-            artist.setMedia( media )
-            .then( artist => {
-              res.json({ result : 1, content : artist });
-            })
-            .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
-          })
-          .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
+        artist.setMedia( media )
+        .then( artist => {
+          res.json({ result : 1, content : artist });
         })
         .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })

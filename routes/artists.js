@@ -24,8 +24,8 @@ router.get('/one/:artistID', function (req,res) {
               id : req.params.artistID
             },
     include : [
-                { model : models.Media,    as : 'Medias',    include : [ { model : models.Type    } ] },
-                { model : models.Platform, as : 'Platforms', include : [ { model : models.Type    } ] },
+                { model : models.Media,    as : 'Medias'    },
+                { model : models.Platform, as : 'Platforms' },
                 { model : models.Festival, as : 'Festivals', include : [ { model : models.Address } ] }
               ]
   })
@@ -48,8 +48,8 @@ router.get('/all', function (req,res) {
 
   models.Artist.findAll({
     include : [
-                { model : models.Media,    as : 'Medias',    include : [ { model : models.Type    } ] },
-                { model : models.Platform, as : 'Platforms', include : [ { model : models.Type    } ] },
+                { model : models.Media,    as : 'Medias'    },
+                { model : models.Platform, as : 'Platforms' },
                 { model : models.Festival, as : 'Festivals', include : [ { model : models.Address } ] }
               ]
   })
@@ -146,33 +146,19 @@ router.post('/platform', function (req,res) {
   })
   .then( artist => {
 
-    models.Type.find({
-      where : {
-                id : send.type
-              }
+    models.Platform.create({
+      name : send.name,
+      url  : send.url
     })
-    .then( type => {
+    .then( platform => {
 
-      models.Platform.create({
-        name : send.name,
-        url  : send.url
-      })
-      .then( platform => {
-
-          platform.setType(type)
-          .then( platform => {
-
-            artist.setPlatform(platform)
-            .then( artist => {
-              res.json({ result : 1, content : artist });
-            })
-            .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
-          })
-          .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
+      artist.setPlatform(platform)
+      .then( artist => {
+        res.json({ result : 1, content : artist });
       })
       .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     })
-    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
+    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
   })
   .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
@@ -193,8 +179,8 @@ router.post('/search', function (req,res) {
                           { description : { [Op.like] : '%' + send.term + '%' } } ]
             },
     include : [
-            { model : models.Media,    as : 'Medias',    include : [ { model : models.Type    } ] },
-            { model : models.Platform, as : 'Platforms', include : [ { model : models.Type    } ] },
+            { model : models.Media,    as : 'Medias'    },
+            { model : models.Platform, as : 'Platforms' },
             { model : models.Festival, as : 'Festivals', include : [ { model : models.Address } ] }
           ]
   })

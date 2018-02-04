@@ -15,7 +15,7 @@ const sequelize = require('sequelize');
 router.get('/', function (req,res) {
 
   models.Platform.findAll({
-    include : [ { model : models.Type } ]
+
   })
   .then( platforms => {
 

@@ -1,10 +1,11 @@
 'use strict';
 
 const express = require('express');
-const router = express.Router();
+const router  = express.Router();
 
-const models = require('../models');
+const models    = require('../models');
 const sequelize = require('sequelize');
+const Op        = sequelize.Op;
 
 /**
 * ROUTE :
@@ -19,11 +20,11 @@ router.get('/one/:ID', function (req,res) {
                 id : req.params.ID
               },
     include : [
-                { model : models.Media,     as : 'Medias' ,   include : [ { model : models.Type  } ] },
-                { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
-                { model : models.Platform,  as : 'Platforms', include : [ { model : models.Type } ] },
-                { model : models.Scene,     as : 'Scenes' },
-                { model : models.Price,     as : 'Prices' },
+                { model : models.Artist,    as : 'Artists',  include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Platform,  as : 'Platforms' },
+                { model : models.Media,     as : 'Medias'    },
+                { model : models.Scene,     as : 'Scenes'    },
+                { model : models.Price,     as : 'Prices'    },
                 { model : models.Address }
               ]
   })
@@ -48,11 +49,11 @@ router.get('/coming', function (req,res) {
                 begin : { [Op.gte] : new Date() }
               },
     include : [
-                { model : models.Media,     as : 'Medias' ,   include : [ { model : models.Type  } ] },
                 { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
-                { model : models.Platform,  as : 'Platforms', include : [ { model : models.Type } ] },
-                { model : models.Scene,     as : 'Scenes' },
-                { model : models.Price,     as : 'Prices' },
+                { model : models.Platform,  as : 'Platforms' },
+                { model : models.Media,     as : 'Medias'    },
+                { model : models.Scene,     as : 'Scenes'    },
+                { model : models.Price,     as : 'Prices'    },
                 { model : models.Address }
               ]
   })
@@ -74,11 +75,11 @@ router.get('/all', function (req,res) {
 
   models.Festival.findAll({
     include : [
-                { model : models.Media,     as : 'Medias' ,   include : [ { model : models.Type  } ] },
                 { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
-                { model : models.Platform,  as : 'Platforms', include : [ { model : models.Type } ] },
-                { model : models.Scene,     as : 'Scenes' },
-                { model : models.Price,     as : 'Prices' },
+                { model : models.Platform,  as : 'Platforms' },
+                { model : models.Media,     as : 'Medias'    },
+                { model : models.Scene,     as : 'Scenes'    },
+                { model : models.Price,     as : 'Prices'    },
                 { model : models.Address }
               ]
   })
@@ -95,6 +96,36 @@ router.get('/all', function (req,res) {
 
   })
   .catch( err => { res.json({ result : 0, message : 'Error', error : err }); });
+
+});
+
+/**
+* ROUTE :
+* DESCRIPTION :
+* PARAMS :
+* RESULT :
+*/
+router.post('/search', function (req,res) {
+  let sedn = req.body;
+
+  models.Festival.find({
+    where   : {
+                [Op.like] : '%' + send.term + '%'
+              },
+    include : [
+                { model : models.Artist,    as : 'Artists',  include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Platform,  as : 'Platforms' },
+                { model : models.Media,     as : 'Medias'    },
+                { model : models.Scene,     as : 'Scenes'    },
+                { model : models.Price,     as : 'Prices'    },
+                { model : models.Address }
+              ]
+  })
+  .then( festival => {
+    if (festival) res.json({ result : 1, content : festival.responsify() });
+    else res.json({ result : 0, message : 'No festival found' });
+  })
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -197,33 +228,19 @@ router.post('/platform', function (req,res) {
   })
   .then( festival => {
 
-    models.Type.find({
-      where : {
-                id : send.type
-              }
+    models.Platform.create({
+      name : send.name,
+      url  : send.url
     })
-    .then( type => {
+    .then( platform => {
 
-      models.Platform.create({
-        name : send.name,
-        url  : send.url
-      })
-      .then( platform => {
-
-          platform.setType(type)
-          .then( platform => {
-
-            festival.setPlatform(platform)
-            .then( festival => {
-              res.json({ result : 1, content : festival });
-            })
-            .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
-          })
-          .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
+      festival.setPlatform(platform)
+      .then( festival => {
+        res.json({ result : 1, content : festival });
       })
       .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     })
-    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
+    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
   })
   .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
