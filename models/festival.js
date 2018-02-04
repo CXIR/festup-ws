@@ -19,11 +19,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull : false
     },
     begin : {
-      type : DataTypes.DATETIME,
+      type : DataTypes.DATE,
       allowNull : false
     },
     end : {
-      type : DataTypes.DATETIME,
+      type : DataTypes.DATE,
       allowNull : false
     },
     description : {

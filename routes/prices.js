@@ -26,7 +26,7 @@ router.get('/:festivalID', function (req,res) {
 
     res.json({ result : 1, content : results });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -40,7 +40,9 @@ router.post('/new', function (req,res) {
   let send = req.body;
 
   models.Festival.find({
-
+    where : {
+              id : send.festival
+            }
   })
   .then( festival => {
 
@@ -54,11 +56,11 @@ router.post('/new', function (req,res) {
       .then( festival => {
         res.json({ result : 1, content : festival });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     })
-    .catch( err => { res.json({ result : -1, message : 'Error' }); });
+    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -86,9 +88,9 @@ router.post('/edit', function (req,res) {
       });
       res.json({ result : 1, content : price});
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Price found' });
   })
-  .catch( err => { res.json({ result : 0, message : 'Error' }); });
+  .catch( err => { res.json({ result : 0, message : 'Error', error : err }); });
 
 });
 
@@ -113,11 +115,11 @@ router.delete('/:priceID', function (req,res) {
       .then( price => {
         res.json({ result : 1, message : 'Price successfully destroyed' });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Price found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 

@@ -26,7 +26,7 @@ router.get('/:festivalID', function (req,res) {
 
     res.json({ result : 1, content : results });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 });
 
 /**
@@ -58,13 +58,13 @@ router.post('/new', function (req,res) {
 
           res.json({ result : 1, content : festival });
         })
-        .catch( err => { res.json({ result : -1, message : 'Error' }); });
+        .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Festival found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -92,9 +92,9 @@ router.post('/edit', function (req,res) {
       });
       res.json({ result : 1, content : scene });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Scene found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -126,11 +126,11 @@ router.post('/:sceneID', function (req,res) {
       .then( scene => {
         res.json({ result : 1, message : 'Scene successfully destroyed' });
       })
-      .catch( err => { res.json({ result : 0, message : 'Error' }); });
+      .catch( err => { res.json({ result : 0, message : 'Error', error : err }); });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Scene found' });
   })
-  .catch( err => { res.json({ result : 0, message : 'Error' }); });
+  .catch( err => { res.json({ result : 0, message : 'Error', error : err }); });
 
 });
 

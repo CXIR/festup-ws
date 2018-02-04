@@ -21,9 +21,9 @@ router.get('/one/:artistID', function (req,res) {
               id : req.params.artistID
             },
     include : [
-                { model : models.Media,    as : 'Medias',      include : [ models.Type    ] },
-                { model : models.Platform, as : 'Plateforms',  include : [ models.Type    ] },
-                { model : models.Festival, as : 'Shows',       include : [ models.Address ] }
+                { model : models.Media,    as : 'Medias',      include : [ { model : models.Type    } ] },
+                { model : models.Platform, as : 'Plateforms',  include : [ { model : models.Type    } ] },
+                { model : models.Festival, as : 'Shows',       include : [ { model : models.Address } ] }
               ]
   })
   .then( artist => {
@@ -45,24 +45,24 @@ router.get('/all', function (req,res) {
 
   models.Artist.findAll({
     include : [
-                { model : models.Media,    as : 'Medias',    include : [ models.Type ]     },
-                { model : models.Platform, as : 'Platforms', include : [ models.Type ]     },
-                { model : models.Festival, as : 'Festivals', include : [ models.Address ]  }
+                { model : models.Media,    as : 'Medias',    include : [ { model : models.Type    } ] },
+                { model : models.Platform, as : 'Platforms', include : [ { model : models.Type    } ] },
+                { model : models.Festival, as : 'Festivals', include : [ { model : models.Address } ] }
               ]
   })
   .then( artists => {
 
     if (artists) {
-      let results = {};
+      let results = [];
 
       for(let artist of artists) results.push(artist.responsify());
 
       res.json({ result : 1, content : results });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Artist found' });
 
   })
-  .catch( err => { res.json({ result : -1, message : 'Error', err : err  }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err  }); });
 
 });
 
@@ -83,9 +83,9 @@ router.post('/new', function (req,res) {
   .then( artist => {
 
     if (artist) res.json({ result : 1, content : artist.responsify() });
-    else res.json({ result : -1, message : 'Error' });
+    else res.json({ result : -1, message : 'No Artist found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -117,13 +117,13 @@ router.post('/media', function (req,res) {
         .then( artist => {
           res.json({result : 1, content : artist.responsify() });
         })
-        .catch( err => { res.json({ result : -1, message : 'Error' }); });
+        .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Artist found' });
   })
-  .catch(err => { res.json({ result : -1, message : 'Error' }); });
+  .catch(err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -163,15 +163,15 @@ router.post('/platform', function (req,res) {
             .then( artist => {
               res.json({ result : 1, content : artist });
             })
-            .catch( err => { res.json({ result : -1, message : 'Error' }); });
+            .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
           })
-          .catch( err => { res.json({ result : -1, message : 'Error' }); });
+          .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     })
-    .catch( err => { res.json({ result : -1, message : 'Error' }); });
+    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -190,14 +190,14 @@ router.post('/search', function (req,res) {
                   { description : { [Op.like] : send.term } } ]
     },
     include : [
-                { model : models.Media,    as : 'Medias',     include : [ models.Type    ] },
-                { model : models.Platform, as : 'Plateforms', include : [ models.Type    ] },
-                { model : models.Festival, as : 'Shows',      include : [ models.Address ] }
+                { model : models.Media,    as : 'Medias',     include : [ { model : models.Type    } ] },
+                { model : models.Platform, as : 'Plateforms', include : [ { model : models.Type    } ] },
+                { model : models.Festival, as : 'Shows',      include : [ { model : models.Address } ] }
               ]
   })
   .then( artists => {
     if( artists ){
-      let results = {};
+      let results = [];
 
       for( let artist of artists ) results.push( artist.responsify() );
 
@@ -205,7 +205,7 @@ router.post('/search', function (req,res) {
     }
     else res.redirect('/artists/discogs');
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -229,7 +229,7 @@ router.post('/discogs', function (req,res) {
   .then( artist => {
     res.json(artist);
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 

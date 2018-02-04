@@ -21,17 +21,17 @@ router.get('/:artistID', function (req,res) {
     include : [
                 { model : models.Festival, include : [ models.Address ] },
                 { model : models.Scene    },
-                { model : models.Artist   }
+                { model : models.Artist, include : [ { model : models.Media }, { model : models.Platform } ] }
               ]
   })
   .then( timetables => {
-    let results = {};
+    let results = [];
 
     for( let timetable of timetables ) results.push(timetable.responsify());
 
     res.json({ result : 1, content : results });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -49,13 +49,13 @@ router.get('/:sceneID', function (req,res) {
             }
   })
   .then( timetables => {
-      let results = {};
+      let results = [];
 
       for( let timetable of timetables ) results.push(timetable.responsify());
 
       res.json({ result : 1, content : results });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 });
 
 /**
@@ -72,13 +72,13 @@ router.get('/:festivalID', function (req,res) {
             }
   })
   .then( timetables => {
-      let results = {};
+      let results = [];
 
       for( let timetable of timetables ) results.push(timetable.responsify());
 
       res.json({ result : 1, content : results });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -127,19 +127,19 @@ router.post('/new', function (req,res) {
               .then( timetable => {
                 res.json({ result : 1, content : timetable });
               })
-              .catch( err => { res.json({ result : -1, message : 'Error' }); });
+              .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
             })
-            .catch( err => { res.json({ result : -1, message : 'Error' }); });
+            .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
           })
-          .catch( err => { res.json({ result : -1, message : 'Error' }); });
+          .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
         })
-        .catch( err => { res.json({ result : -1, message : 'Error' }); });
+        .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     })
-    .catch( err => { res.json({ result : -1, message : 'Error' }); });
+    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 });
 
 /**
@@ -165,9 +165,9 @@ router.post('/edit', function (req,res) {
       });
       res.json({ result : 1, content : timetable });
     }
-    else res.json({ result : 0, message : ' Error' });
+    else res.json({ result : 0, message : ' No Timetable found' });
   })
-  .catch( err => { res.json({ result : 0, message : ' Error' }); });
+  .catch( err => { res.json({ result : 0, message : ' Error', error : err }); });
 });
 
 /**
@@ -190,9 +190,9 @@ router.delete('/:timetableID', function (req,res) {
     .then( timetable => {
       res.json({ result : 1, message : 'Timetable successfully destroyed' });
     })
-    .catch( err => { res.json({ result : -1, message : 'Error' }); });
+    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 });
 
 module.exports = router;

@@ -20,15 +20,15 @@ router.get('/', function (req,res) {
   .then( platforms => {
 
     if (platforms) {
-      let results = {};
+      let results = [];
 
       for( let platform of platforms ) results.push(platform.responsify());
 
       res.json({ result : 1, content : results });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Platform found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -56,9 +56,9 @@ router.post('/edit', function (req,res) {
       });
       res.json({ result : 1, content : platform });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Platform found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -83,11 +83,11 @@ router.delete('/:platformID', function (req,res) {
       .then( platform => {
         res.json({ result : 1, message : 'Platform successfully destroyed' });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Platform found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 

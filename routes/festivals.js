@@ -19,9 +19,9 @@ router.get('/one/:ID', function (req,res) {
                 id : req.params.ID
               },
     include : [
-                { model : models.Media,     as : 'Medias',    include : [ models.Type ]                  },
-                { model : models.Artist,    as : 'Artists',   include : [ models.Type, models.Platform ] },
-                { model : models.Platform,  as : 'Platforms', include : [ models.Type ]                  },
+                { model : models.Media,     as : 'Medias' ,   include : [ { model : models.Type  } ] },
+                { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Platform,  as : 'Platforms', include : [ { model : models.Type } ] },
                 { model : models.Scene,     as : 'Scenes' },
                 { model : models.Price,     as : 'Prices' },
                 { model : models.Address }
@@ -29,9 +29,38 @@ router.get('/one/:ID', function (req,res) {
   })
   .then( festival => {
     if (festival) res.json({ result : 1, content : festival.responsify() });
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No festival found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
+
+});
+
+/**
+* ROUTE :
+* DESCRIPTION :
+* PARAMS :
+* RESULT :
+*/
+router.get('/coming', function (req,res) {
+
+  models.Festival.find({
+    where   : {
+                begin : { [Op.gte] : new Date() }
+              },
+    include : [
+                { model : models.Media,     as : 'Medias' ,   include : [ { model : models.Type  } ] },
+                { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Platform,  as : 'Platforms', include : [ { model : models.Type } ] },
+                { model : models.Scene,     as : 'Scenes' },
+                { model : models.Price,     as : 'Prices' },
+                { model : models.Address }
+              ]
+  })
+  .then( festival => {
+    if (festival) res.json({ result : 1, content : festival.responsify() });
+    else res.json({ result : 0, message : 'No festival found' });
+  })
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
@@ -45,9 +74,9 @@ router.get('/all', function (req,res) {
 
   models.Festival.findAll({
     include : [
-                { model : models.Media,     as : 'Medias',    include : [ models.Type ]                  },
-                { model : models.Artist,    as : 'Artists',   include : [ models.Type, models.Platform ] },
-                { model : models.Platform,  as : 'Platforms', include : [ models.Type ]                  },
+                { model : models.Media,     as : 'Medias' ,   include : [ { model : models.Type  } ] },
+                { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Platform,  as : 'Platforms', include : [ { model : models.Type } ] },
                 { model : models.Scene,     as : 'Scenes' },
                 { model : models.Price,     as : 'Prices' },
                 { model : models.Address }
@@ -56,16 +85,16 @@ router.get('/all', function (req,res) {
   .then( festivals => {
 
     if (festivals) {
-      let results = {};
+      let results = [];
 
       for(let festival of festivals ) results.push(festival.responsify());
 
       res.json({ result : 1, content : results });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No festival found' });
 
   })
-  .catch( err => { res.json({ result : 0, message : 'Error' }); });
+  .catch( err => { res.json({ result : 0, message : 'Error', error : err }); });
 
 });
 
@@ -104,13 +133,13 @@ router.post('/new', function (req,res) {
 
           res.json({ result : 1, content : festival });
         })
-        .catch( err => { res.json({ result : -1, message : 'Error' }); });
+        .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No Address found' });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error'  }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err  }); });
 
 });
 
@@ -143,13 +172,13 @@ router.post('/artist', function (req,res) {
         .then( festival => {
           res.json({ result : 1, content : festival });
         })
-        .catch( err => { res.json({ result : -1, message : 'Error' }); });
+        .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     }
-    else res.json({ result : 0, message : 'Error' });
+    else res.json({ result : 0, message : 'No artist found' });
   })
-  .catch( err => { res.json({  result : -1, message : 'Error' }); });
+  .catch( err => { res.json({  result : -1, message : 'Error', error : err }); });
 });
 
 /**
@@ -188,15 +217,15 @@ router.post('/platform', function (req,res) {
             .then( festival => {
               res.json({ result : 1, content : festival });
             })
-            .catch( err => { res.json({ result : -1, message : 'Error' }); });
+            .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
           })
-          .catch( err => { res.json({ result : -1, message : 'Error' }); });
+          .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
       })
-      .catch( err => { res.json({ result : -1, message : 'Error' }); });
+      .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
     })
-    .catch( err => { res.json({ result : -1, message : 'Error' }); });
+    .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
   })
-  .catch( err => { res.json({ result : -1, message : 'Error' }); });
+  .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
 
 });
 
