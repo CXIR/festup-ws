@@ -27,10 +27,10 @@ module.exports = function(sequelize, DataTypes) {
   /** Class Methods */
 
   Platform.associate = function (models) {
-    Platform.belongsTo( models.Type );
 
     Platform.belongsToMany( models.Festival, { through : 'FestivalPlatforms', as : 'Platforms' } );
     Platform.belongsToMany( models.Artist,   { through : 'ArtistPlatforms',   as : 'Artists'   } );
+
   }
 
   /** Instance Methods */
@@ -40,8 +40,6 @@ module.exports = function(sequelize, DataTypes) {
 
     result.id   = this.id;
     result.name = this.name;
-
-    if( this.Type ) result.media = this.Type.responsify();
 
     return result;
   }

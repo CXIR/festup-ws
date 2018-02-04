@@ -27,7 +27,6 @@ module.exports = function(sequelize, DataTypes) {
   /** Class Methods */
 
   Media.associate = function (models) {
-    Media.belongsTo( models.Type );
 
     Media.belongsToMany( models.Festival, { through : 'FestivalMedias', foreignKey : 'MediaId', as : 'Festivals' } );
     Media.belongsToMany( models.Artist,   { through : 'ArtistMedias',   foreignKey : 'MediaId', as : 'Artists'   } );
@@ -42,8 +41,6 @@ module.exports = function(sequelize, DataTypes) {
     result.id   = this.id;
     result.name = this.name;
     result.url  = this.url;
-
-    if( this.Type ) result.type = this.Type.responsify();
 
     return result;
   }

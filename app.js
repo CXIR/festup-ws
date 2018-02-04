@@ -9,7 +9,7 @@ var bodyParser   = require('body-parser');
 var models = require('./models');
 
 models.sequelize.sync(
-                        { force : true }
+                        //{ force : true }
                       );
 
 
@@ -21,7 +21,6 @@ var platforms  = require('./routes/platforms');
 var prices     = require('./routes/prices');
 var scenes     = require('./routes/scenes');
 var timetables = require('./routes/timetables');
-var types      = require('./routes/types');
 
 var app = express();
 
@@ -45,7 +44,6 @@ app.use( '/platforms',  platforms );
 app.use( '/prices',     prices );
 app.use( '/scenes',     scenes );
 app.use( '/timetables', timetables );
-app.use( '/types',      types );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
