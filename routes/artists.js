@@ -53,7 +53,7 @@ router.get('/all', function (req,res) {
   .then( artists => {
 
     if (artists) {
-      let results = {};
+      let results = [];
 
       for(let artist of artists) results.push(artist.responsify());
 
@@ -197,7 +197,7 @@ router.post('/search', function (req,res) {
   })
   .then( artists => {
     if( artists ){
-      let results = {};
+      let results = [];
 
       for( let artist of artists ) results.push( artist.responsify() );
 

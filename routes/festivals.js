@@ -85,7 +85,7 @@ router.get('/all', function (req,res) {
   .then( festivals => {
 
     if (festivals) {
-      let results = {};
+      let results = [];
 
       for(let festival of festivals ) results.push(festival.responsify());
 

@@ -25,7 +25,7 @@ router.get('/:artistID', function (req,res) {
               ]
   })
   .then( timetables => {
-    let results = {};
+    let results = [];
 
     for( let timetable of timetables ) results.push(timetable.responsify());
 
@@ -49,7 +49,7 @@ router.get('/:sceneID', function (req,res) {
             }
   })
   .then( timetables => {
-      let results = {};
+      let results = [];
 
       for( let timetable of timetables ) results.push(timetable.responsify());
 
@@ -72,7 +72,7 @@ router.get('/:festivalID', function (req,res) {
             }
   })
   .then( timetables => {
-      let results = {};
+      let results = [];
 
       for( let timetable of timetables ) results.push(timetable.responsify());
 

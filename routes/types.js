@@ -18,7 +18,7 @@ router.get('/', function (req,res) {
 
   })
   .then( types => {
-    let results = {};
+    let results = [];
 
     for( let type of types ) results.push(type.responsify());
 

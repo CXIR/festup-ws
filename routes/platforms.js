@@ -20,7 +20,7 @@ router.get('/', function (req,res) {
   .then( platforms => {
 
     if (platforms) {
-      let results = {};
+      let results = [];
 
       for( let platform of platforms ) results.push(platform.responsify());
 
