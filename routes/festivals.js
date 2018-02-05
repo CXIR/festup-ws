@@ -108,6 +108,7 @@ router.get('/all', function (req,res) {
 * PARAMS :
 * RESULT :
 */
+
 router.post('/search', function (req,res) {
   let sedn = req.body;
 
@@ -124,6 +125,7 @@ router.post('/search', function (req,res) {
                 { model : models.Price,     as : 'Prices'    },
                 { model : models.Address }
               ]
+  })
   .then( festival => {
     if (festival) res.json({ result : 1, content : festival.responsify() });
     else res.json({ result : 0, message : 'No festival found' });
