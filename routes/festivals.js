@@ -20,7 +20,8 @@ router.get('/one/:ID', function (req,res) {
                 id : req.params.ID
               },
     include : [
-                { model : models.Artist,    as : 'Artists',  include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Artist,    as : 'Artists',   include : [  { model : models.Media,    as : 'Medias'    },
+                                                                           { model : models.Platform, as : 'Platforms' } ] },
                 { model : models.Platform,  as : 'Platforms' },
                 { model : models.Media,     as : 'Medias'    },
                 { model : models.Scene,     as : 'Scenes'    },
@@ -49,7 +50,8 @@ router.get('/coming', function (req,res) {
                 begin : { [Op.gte] : new Date() }
               },
     include : [
-                { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Artist,    as : 'Artists',   include : [  { model : models.Media,    as : 'Medias'    },
+                                                                           { model : models.Platform, as : 'Platforms' } ] },
                 { model : models.Platform,  as : 'Platforms' },
                 { model : models.Media,     as : 'Medias'    },
                 { model : models.Scene,     as : 'Scenes'    },
@@ -75,7 +77,8 @@ router.get('/all', function (req,res) {
 
   models.Festival.findAll({
     include : [
-                { model : models.Artist,    as : 'Artists',   include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Artist,    as : 'Artists',   include : [  { model : models.Media,    as : 'Medias'    },
+                                                                           { model : models.Platform, as : 'Platforms' } ] },
                 { model : models.Platform,  as : 'Platforms' },
                 { model : models.Media,     as : 'Medias'    },
                 { model : models.Scene,     as : 'Scenes'    },
@@ -113,14 +116,14 @@ router.post('/search', function (req,res) {
                 [Op.like] : '%' + send.term + '%'
               },
     include : [
-                { model : models.Artist,    as : 'Artists',  include : [ { model : models.Platform }, { model : models.Media } ] },
+                { model : models.Artist,    as : 'Artists',   include : [  { model : models.Media,    as : 'Medias'    },
+                                                                           { model : models.Platform, as : 'Platforms' } ] },
                 { model : models.Platform,  as : 'Platforms' },
                 { model : models.Media,     as : 'Medias'    },
                 { model : models.Scene,     as : 'Scenes'    },
                 { model : models.Price,     as : 'Prices'    },
                 { model : models.Address }
               ]
-  })
   .then( festival => {
     if (festival) res.json({ result : 1, content : festival.responsify() });
     else res.json({ result : 0, message : 'No festival found' });

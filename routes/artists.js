@@ -194,8 +194,8 @@ router.post('/search', function (req,res) {
     else
     {
       let discogs = new Discogs({
-    	                             consumerKey: 'JPKzAYHSdLxiAJWbXoSv',
-    	                             consumerSecret: 'aoQwGDDIzrYPghySnDwmZvLemLKSEGOh'
+    	                             consumerKey    : 'JPKzAYHSdLxiAJWbXoSv',
+    	                             consumerSecret : 'aoQwGDDIzrYPghySnDwmZvLemLKSEGOh'
                                  });
 
       let data = discogs.database();
