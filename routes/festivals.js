@@ -60,7 +60,13 @@ router.get('/coming', function (req,res) {
               ]
   })
   .then( festival => {
-    if (festival) res.json({ result : 1, content : festival.responsify() });
+    if (festival){
+      let results = [];
+
+      results.push(festival.responsify());
+
+      res.json({ result : 1, content : results });
+    }
     else res.json({ result : 0, message : 'No festival found' });
   })
   .catch( err => { res.json({ result : -1, message : 'Error', error : err }); });
